@@ -1,0 +1,96 @@
+# Unit 3 / Unit 4 Implementation Evidence
+
+## Scope and baseline limitation
+
+The existing project contains the original Ollama currency/budget tool-calling agent in `backend/agent.py`. That workflow does not accept trip preferences, retrieve destination costs, or return alternative bids, so it cannot be run fairly on the new scenario using identical guide inputs. The comparison below therefore uses a clearly labeled **reconstructed single-agent baseline**: one deterministic estimate using the same preference data and local cost guide, with no alternative proposals. It is not represented as an authentic TA1 model rerun. The original agent remains intact and its existing tests remain in the suite.
+
+## Reproducible scenario
+
+| Input | Value |
+|---|---|
+| Destination | Goa |
+| Dates | 2026-11-01 through 2026-11-06 (5 nights, 6 estimate days) |
+| Travelers | 2 |
+| Budget | INR 30,000 |
+| Style | Moderate |
+| Accommodation | Hotel |
+| Food preference | Vegetarian |
+| Interests | Beaches, heritage |
+
+The sample cost guide is `backend/data/destination_cost_guide.txt`. Its rates are per traveler: accommodation per night and the other categories per day. It explicitly warns that estimates are illustrative, not live or verified prices. Local taxes, seasonal rates, exchange fees, and individual needs are excluded.
+
+## Retrieved evidence
+
+The run retrieved `destination_cost_guide.txt`, section `Goa | INR`.
+
+| Category | Budget | Moderate | Luxury |
+|---|---:|---:|---:|
+| Hotel per person/night | 1,200 | 2,500 | 7,000 |
+| Food per person/day | 450 | 900 | 2,200 |
+| Local transport per person/day | 500 | 500 | 1,200 |
+| Activities per person/day | 400 | 1,200 | 3,500 |
+
+Baseline calculations use 5 hotel nights and 6 estimate days, each multiplied by 2 travelers:
+
+- Hotel: 2,500 × 5 × 2 = INR 25,000
+- Food: 900 × 6 × 2 = INR 10,800
+- Transport: 500 × 6 × 2 = INR 6,000
+- Activities: 1,200 × 6 × 2 = INR 14,400
+- **Baseline total: INR 56,200**, which exceeds the budget by **INR 26,200**.
+
+## Actual multi-agent bids
+
+| Agent | Proposed changes | Estimated total | Savings vs baseline | Budget | Feasible | Constraint violations | Decision |
+|---|---|---:|---:|---:|---|---|---|
+| Reconstructed baseline | Keep moderate estimates | INR 56,200 | INR 0 | INR 30,000 | No | None | Rejected: exceeds budget by INR 26,200 |
+| Budget Agent | Use budget-tier hotel, food, and activities; transport tier is unchanged in the guide | INR 28,200 | INR 28,000 | INR 30,000 | Yes | None | **Selected: cheapest valid feasible bid** |
+| Itinerary Agent | Schedule one low-cost/rest day instead of a paid-activity day | INR 53,800 | INR 2,400 | INR 30,000 | No | None | Rejected: exceeds budget by INR 23,800 |
+
+Cheapest feasible is defined arithmetically: among valid bids without hard-constraint violations whose total is at or below the budget, choose the minimum total. The selected Budget Agent bid is INR 1,800 below budget. Itemized original and comparison-currency values and exchange-rate assumptions are included in the JSON output. For this INR scenario the configured rate is 1.0; cross-currency conversions use only the configured demonstration rate table.
+
+The generated itinerary is a suggestion, not a reservation or availability claim. It reflects the selected cost tier, user interests, food preference, travel dates, and activity estimate.
+
+## Preference persistence and thread memory
+
+Preferences (destination, dates, travelers, budget/currency, style, accommodation, food, interests, and hard constraints) are persisted in SQLite. LangGraph SQLite checkpoints store state and messages with the trip ID as `thread_id`. The reproducible JSON includes a separate thread conversation:
+
+1. “Plan this Goa trip.”
+2. “Reduce my budget to ₹15,000.”
+3. “What if two more people join?”
+
+The thread carries the budget update into turn 2 and the traveler-count update into turn 3. Tests also use separate thread IDs and verify the initial budget in one thread does not leak into the other.
+
+## Single-agent comparison
+
+| Measure | Reconstructed one-pass baseline | Supervised multi-agent workflow |
+|---|---:|---:|
+| Estimated total | INR 56,200 | INR 28,200 selected bid |
+| Feasibility | Infeasible | Feasible |
+| Budget gap | INR 26,200 | INR 0 |
+| Savings vs same baseline | INR 0 | INR 28,000 |
+| Candidate count | 1 | 3 |
+| Constraint violations | 0 | 0 for selected bid |
+
+Measured execution durations for this deterministic local run are recorded in `UNIT3_UNIT4_EVIDENCE.json`; these are single-run timings, not a statistically meaningful performance benchmark. Ollama is not used by this planner/bidding route. The original LLM tool-calling agent is a separate workflow.
+
+## Test and reproduction commands
+
+From the repository root:
+
+```powershell
+.\venv\Scripts\python.exe -m pytest -q
+Set-Location frontend
+npm run build
+Set-Location ..
+.\venv\Scripts\python.exe scripts\generate_unit3_unit4_evidence.py
+```
+
+The evidence JSON is generated by the implemented deterministic planner and SQLite-backed thread workflow. It contains the complete guide retrieval, raw bids, selected bid, comparison, itinerary, and conversation outputs; it is not manually fabricated.
+
+## Limitations
+
+- Destination amounts and exchange rates are sample estimates only; they are not live prices.
+- Only destinations and currencies present in the local guide and demonstration rates can be priced and compared.
+- Hostel/rental estimates are not present in the supplied guide, so the planner returns an explicit missing-data error for those requests.
+- Specialized planner agents use deterministic Python rules for explainable bids; Qwen is not asked to invent prices or decide feasibility.
+- TA1 is not comparable on this exact destination/RAG input; the report labels the single-agent result as reconstructed.

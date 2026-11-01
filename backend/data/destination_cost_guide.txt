@@ -1,0 +1,55 @@
+# ILLUSTRATIVE SAMPLE ESTIMATES ONLY
+# These are not live, verified, bookable, or guaranteed market prices.
+# Rates are estimates per traveler: lodging per night, all other categories per day.
+# Local taxes, seasonal changes, exchange fees, and individual needs are excluded.
+
+## Goa | INR
+hotel_budget=1200
+hotel_moderate=2500
+hotel_luxury=7000
+food_budget=450
+food_moderate=900
+food_luxury=2200
+transport_budget=500
+transport_moderate=500
+transport_luxury=1200
+activities_budget=400
+activities_moderate=1200
+activities_luxury=3500
+- Accommodation estimates represent a per-person share of a double room.
+- Daily category estimates are per traveler per day.
+- Budget activities assume mostly low-cost sightseeing; luxury may include paid tours.
+
+## Paris | EUR
+hotel_budget=75
+hotel_moderate=150
+hotel_luxury=420
+food_budget=28
+food_moderate=55
+food_luxury=130
+transport_budget=12
+transport_moderate=20
+transport_luxury=55
+activities_budget=15
+activities_moderate=38
+activities_luxury=110
+- Accommodation estimates represent a per-person share of a double room.
+- Daily category estimates are per traveler per day.
+- Budget activities assume parks and selected low-cost attractions.
+
+## Tokyo | JPY
+hotel_budget=8500
+hotel_moderate=16000
+hotel_luxury=45000
+food_budget=2500
+food_moderate=5200
+food_luxury=14000
+transport_budget=900
+transport_moderate=1500
+transport_luxury=4500
+activities_budget=1000
+activities_moderate=3200
+activities_luxury=10000
+- Accommodation estimates represent a per-person share of a double room.
+- Daily category estimates are per traveler per day.
+- JPY is not supported by the demonstration exchange-rate table.

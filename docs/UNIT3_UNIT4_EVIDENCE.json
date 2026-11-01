@@ -1,0 +1,394 @@
+{
+  "scenario": {
+    "destination": "Goa",
+    "start_date": "2026-11-01",
+    "end_date": "2026-11-06",
+    "travelers": 2,
+    "budget": 30000.0,
+    "currency": "INR",
+    "budget_style": "moderate",
+    "preferred_accommodation_type": "hotel",
+    "food_preferences": [
+      "vegetarian"
+    ],
+    "interests": [
+      "beaches",
+      "heritage"
+    ],
+    "hard_constraints": []
+  },
+  "assumptions": [
+    "Accommodation estimates represent a per-person share of a double room.",
+    "Daily category estimates are per traveler per day.",
+    "Budget activities assume mostly low-cost sightseeing; luxury may include paid tours."
+  ],
+  "retrieved_evidence": {
+    "destination": "Goa",
+    "currency": "INR",
+    "section": "Goa | INR",
+    "source_file": "destination_cost_guide.txt",
+    "estimates": {
+      "hotel": {
+        "budget": 1200.0,
+        "moderate": 2500.0,
+        "luxury": 7000.0
+      },
+      "food": {
+        "budget": 450.0,
+        "moderate": 900.0,
+        "luxury": 2200.0
+      },
+      "transport": {
+        "budget": 500.0,
+        "moderate": 500.0,
+        "luxury": 1200.0
+      },
+      "activities": {
+        "budget": 400.0,
+        "moderate": 1200.0,
+        "luxury": 3500.0
+      }
+    },
+    "assumptions": [
+      "Accommodation estimates represent a per-person share of a double room.",
+      "Daily category estimates are per traveler per day.",
+      "Budget activities assume mostly low-cost sightseeing; luxury may include paid tours."
+    ]
+  },
+  "reconstructed_single_agent_baseline": {
+    "label": "Reconstructed single-agent baseline; not an authentic prior TA1 rerun",
+    "bid": {
+      "bid_id": "single-agent-baseline",
+      "agent_name": "baseline",
+      "proposed_changes": [],
+      "itemized_costs": {
+        "hotel": 25000.0,
+        "food": 10800.0,
+        "transport": 6000.0,
+        "activities": 14400.0
+      },
+      "original_itemized_costs": {
+        "hotel": 25000.0,
+        "food": 10800.0,
+        "transport": 6000.0,
+        "activities": 14400.0
+      },
+      "original_currency": "INR",
+      "comparison_currency": "INR",
+      "exchange_rates": {
+        "hotel": 1.0,
+        "food": 1.0,
+        "transport": 1.0,
+        "activities": 1.0
+      },
+      "baseline_cost": 56200.0,
+      "proposed_total_cost": 56200.0,
+      "savings_amount": 0.0,
+      "savings_percentage": 0.0,
+      "budget_limit": 30000.0,
+      "feasible": false,
+      "constraint_violations": [],
+      "assumptions": [
+        "One-pass estimate from the selected style and the shared local cost guide."
+      ],
+      "rationale": "Reconstructed single-agent baseline; not the prior Ollama agent rerun.",
+      "decision_reason": ""
+    },
+    "proposal_count": 1,
+    "execution_time_ms": 0.169,
+    "budget_gap": 26200.0
+  },
+  "supervised_multi_agent": {
+    "bids": [
+      {
+        "bid_id": "single-agent-baseline",
+        "agent_name": "baseline",
+        "proposed_changes": [],
+        "itemized_costs": {
+          "hotel": 25000.0,
+          "food": 10800.0,
+          "transport": 6000.0,
+          "activities": 14400.0
+        },
+        "original_itemized_costs": {
+          "hotel": 25000.0,
+          "food": 10800.0,
+          "transport": 6000.0,
+          "activities": 14400.0
+        },
+        "original_currency": "INR",
+        "comparison_currency": "INR",
+        "exchange_rates": {
+          "hotel": 1.0,
+          "food": 1.0,
+          "transport": 1.0,
+          "activities": 1.0
+        },
+        "baseline_cost": 56200.0,
+        "proposed_total_cost": 56200.0,
+        "savings_amount": 0.0,
+        "savings_percentage": 0.0,
+        "budget_limit": 30000.0,
+        "feasible": false,
+        "constraint_violations": [],
+        "assumptions": [
+          "One-pass estimate from the selected style and the shared local cost guide."
+        ],
+        "rationale": "Reconstructed single-agent baseline; not the prior Ollama agent rerun.",
+        "decision_reason": "Rejected because it exceeds the budget by 26,200.00 INR."
+      },
+      {
+        "bid_id": "budget-agent",
+        "agent_name": "budget_agent",
+        "proposed_changes": [
+          "Use the guide's budget-tier hotel estimate.",
+          "Use the guide's budget-tier food estimate.",
+          "Use the guide's budget-tier activities estimate."
+        ],
+        "itemized_costs": {
+          "hotel": 12000.0,
+          "food": 5400.0,
+          "transport": 6000.0,
+          "activities": 4800.0
+        },
+        "original_itemized_costs": {
+          "hotel": 12000.0,
+          "food": 5400.0,
+          "transport": 6000.0,
+          "activities": 4800.0
+        },
+        "original_currency": "INR",
+        "comparison_currency": "INR",
+        "exchange_rates": {
+          "hotel": 1.0,
+          "food": 1.0,
+          "transport": 1.0,
+          "activities": 1.0
+        },
+        "baseline_cost": 56200.0,
+        "proposed_total_cost": 28200.0,
+        "savings_amount": 28000.0,
+        "savings_percentage": 49.82,
+        "budget_limit": 30000.0,
+        "feasible": true,
+        "constraint_violations": [],
+        "assumptions": [
+          "Uses guide estimates, not live prices.",
+          "Budget-tier alternatives may reduce comfort or activity choices."
+        ],
+        "rationale": "Uses the lowest retrieved guide tiers while preserving the trip dates and traveler count.",
+        "decision_reason": "Selected as the cheapest valid feasible proposal."
+      },
+      {
+        "bid_id": "itinerary-agent",
+        "agent_name": "itinerary_agent",
+        "proposed_changes": [
+          "Schedule one low-cost/rest day instead of a paid-activity day."
+        ],
+        "itemized_costs": {
+          "hotel": 25000.0,
+          "food": 10800.0,
+          "transport": 6000.0,
+          "activities": 12000.0
+        },
+        "original_itemized_costs": {
+          "hotel": 25000.0,
+          "food": 10800.0,
+          "transport": 6000.0,
+          "activities": 12000.0
+        },
+        "original_currency": "INR",
+        "comparison_currency": "INR",
+        "exchange_rates": {
+          "hotel": 1.0,
+          "food": 1.0,
+          "transport": 1.0,
+          "activities": 1.0
+        },
+        "baseline_cost": 56200.0,
+        "proposed_total_cost": 53800.0,
+        "savings_amount": 2400.0,
+        "savings_percentage": 4.27,
+        "budget_limit": 30000.0,
+        "feasible": false,
+        "constraint_violations": [],
+        "assumptions": [
+          "The proposed rest day avoids one day of the guide's estimated paid-activity spending.",
+          "Transport, accommodation, and food assumptions stay unchanged."
+        ],
+        "rationale": "Reduces paid activity spending by scheduling one rest or low-cost day.",
+        "decision_reason": "Rejected because it exceeds the budget by 23,800.00 INR."
+      }
+    ],
+    "selected_bid": {
+      "bid_id": "budget-agent",
+      "agent_name": "budget_agent",
+      "proposed_changes": [
+        "Use the guide's budget-tier hotel estimate.",
+        "Use the guide's budget-tier food estimate.",
+        "Use the guide's budget-tier activities estimate."
+      ],
+      "itemized_costs": {
+        "hotel": 12000.0,
+        "food": 5400.0,
+        "transport": 6000.0,
+        "activities": 4800.0
+      },
+      "original_itemized_costs": {
+        "hotel": 12000.0,
+        "food": 5400.0,
+        "transport": 6000.0,
+        "activities": 4800.0
+      },
+      "original_currency": "INR",
+      "comparison_currency": "INR",
+      "exchange_rates": {
+        "hotel": 1.0,
+        "food": 1.0,
+        "transport": 1.0,
+        "activities": 1.0
+      },
+      "baseline_cost": 56200.0,
+      "proposed_total_cost": 28200.0,
+      "savings_amount": 28000.0,
+      "savings_percentage": 49.82,
+      "budget_limit": 30000.0,
+      "feasible": true,
+      "constraint_violations": [],
+      "assumptions": [
+        "Uses guide estimates, not live prices.",
+        "Budget-tier alternatives may reduce comfort or activity choices."
+      ],
+      "rationale": "Uses the lowest retrieved guide tiers while preserving the trip dates and traveler count.",
+      "decision_reason": "Selected as the cheapest valid feasible proposal."
+    },
+    "itinerary": [
+      {
+        "day": 1,
+        "date": "2026-11-01",
+        "plan": "Arrival, settle in, and explore nearby low-cost beaches, heritage; consider vegetarian options.",
+        "estimated_activity_cost": 400.0,
+        "currency": "INR"
+      },
+      {
+        "day": 2,
+        "date": "2026-11-02",
+        "plan": "Choose budget-tier activities related to beaches, heritage.",
+        "estimated_activity_cost": 400.0,
+        "currency": "INR"
+      },
+      {
+        "day": 3,
+        "date": "2026-11-03",
+        "plan": "Choose budget-tier activities related to beaches, heritage.",
+        "estimated_activity_cost": 400.0,
+        "currency": "INR"
+      },
+      {
+        "day": 4,
+        "date": "2026-11-04",
+        "plan": "Choose budget-tier activities related to beaches, heritage.",
+        "estimated_activity_cost": 400.0,
+        "currency": "INR"
+      },
+      {
+        "day": 5,
+        "date": "2026-11-05",
+        "plan": "Choose budget-tier activities related to beaches, heritage.",
+        "estimated_activity_cost": 400.0,
+        "currency": "INR"
+      },
+      {
+        "day": 6,
+        "date": "2026-11-06",
+        "plan": "Flexible final day for beaches, heritage, then departure; leave time for local transport.",
+        "estimated_activity_cost": 400.0,
+        "currency": "INR"
+      }
+    ],
+    "answer": "Selected budget_agent at an estimated 28,200.00 INR; budget is 30,000.00 INR.",
+    "rationale": "Selected budget_agent: it is the lowest-cost valid proposal that fits the 30,000.00 INR budget.",
+    "execution_trace": [
+      {
+        "step": "1",
+        "agent": "RAG",
+        "event": "Retrieved evidence from destination_cost_guide.txt section Goa | INR."
+      },
+      {
+        "step": "2",
+        "agent": "Currency Agent",
+        "event": "Normalized every estimate into INR using configured demo rates."
+      },
+      {
+        "step": "3",
+        "agent": "Budget Agent",
+        "event": "Generated deterministic budget-tier proposal."
+      },
+      {
+        "step": "4",
+        "agent": "Itinerary Agent",
+        "event": "Generated a rest-day proposal from guide activity estimates."
+      },
+      {
+        "step": "5",
+        "agent": "Supervisor",
+        "event": "Selected budget_agent: it is the lowest-cost valid proposal that fits the 30,000.00 INR budget."
+      }
+    ],
+    "proposal_count": 3,
+    "execution_time_ms": 0.635
+  },
+  "comparison": {
+    "baseline_label": "Reconstructed single-agent baseline",
+    "multi_agent_label": "Three-agent supervised bidding workflow",
+    "baseline_total_cost": 56200.0,
+    "baseline_feasible": false,
+    "baseline_budget_gap": 26200.0,
+    "baseline_proposal_count": 1,
+    "selected_total_cost": 28200.0,
+    "selected_feasible": true,
+    "multi_agent_budget_gap": 0.0,
+    "multi_agent_proposal_count": 3,
+    "selected_savings": 28000.0,
+    "constraint_violations": 0
+  },
+  "thread_memory_demonstration": {
+    "thread_id": "memory-demo",
+    "turns": [
+      {
+        "role": "user",
+        "content": "Plan this Goa trip."
+      },
+      {
+        "role": "assistant",
+        "content": "Selected budget_agent at an estimated 28,200.00 INR; budget is 30,000.00 INR."
+      },
+      {
+        "role": "user",
+        "content": "Reduce my budget to \u20b915,000."
+      },
+      {
+        "role": "assistant",
+        "content": "No valid proposal fits the budget. The cheapest option exceeds it by 13,200.00 INR."
+      },
+      {
+        "role": "user",
+        "content": "What if two more people join?"
+      },
+      {
+        "role": "assistant",
+        "content": "No valid proposal fits the budget. The cheapest option exceeds it by 41,400.00 INR."
+      }
+    ],
+    "after_budget_follow_up": {
+      "budget": 15000.0,
+      "currency": "INR",
+      "feasibility": "infeasible"
+    },
+    "after_traveler_follow_up": {
+      "travelers": 4,
+      "budget": 15000.0
+    }
+  },
+  "reproducible_command": ".\\venv\\Scripts\\python.exe scripts\\generate_unit3_unit4_evidence.py"
+}
