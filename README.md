@@ -7,6 +7,14 @@ The persistent multi-agent trip planner is the default screen; use the **Currenc
 
 ---
 
+## Screenshots
+
+![alt text](image.png)
+
+![alt text](image-1.png)
+![alt text](<Screenshot 2026-10-21 134949-1.png>)
+
+
 ## What It Does
 
 A user asks: *"I have a budget of ₹100,000 and my estimated trip cost is €900. Can I afford it?"*
